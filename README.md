@@ -7,6 +7,7 @@ Small Project!
 
 - [@thvhieu](https://github.com/thvhieu)
 - [@lamhuwng](https://github.com/lamhuwng)
+- [@Hoanghuy](https://github.com/huytranhoang246-ctr)
 ## Tech Stack
 
 **Client:** Java Script PHP HTML CSS
