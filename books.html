@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Thư viện - LibManage</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Sidebar bên trái -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>Thư viện sách</h2>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="index.html"> Trang chủ</a></li>
+                    <li><a href="books.html"class = "active"> Danh sách sách có sẵn</a></li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <p>Thủ thư: <strong>****</strong></p>
+                <a href="login.html" class="logout-btn">Đăng xuất</a>
+            </div>
+        </aside>
+
+        <!-- Nội dung chính bên phải -->
+       <main class="main-content">
+        <header class="top-bar">
+            <div class="search-box">
+                <!-- Sự kiện onkeyup dùng để lọc sách ngay khi gõ -->
+                <input type="text" id="library-search" placeholder="Nhập tên sách hoặc tác giả để lọc..." onkeyup="filterBooks()">
+                <button class="search-btn">Tìm kiếm</button>
+            </div>
+        </header>
+
+        <section class="content-body">
+            <h2>Sách có sẵn trong kho</h2>
+            <div id="book-display-grid" class="book-grid">
+                <!-- Các thẻ sách sẽ tự động hiện ở đây -->
+            </div>
+        </section>
+    </main>
+
+
+    <script src="./JavaScripts/index.js"></script>
+</body>
+</html>

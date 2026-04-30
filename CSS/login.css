@@ -1,0 +1,84 @@
+/* 1. Thiết lập font chữ và nền cho toàn bộ trang */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6); /* Nền dải màu hiện đại */
+    height: 100 vertical-height;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. Tạo khung đăng nhập (Box-shadow và Border-radius) */
+#LB {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 12px; /* Bo góc mềm mại */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Tạo độ nổi khối */
+    width: 350px;
+    text-align: center;
+}
+
+/* 3. Định dạng tiêu đề */
+h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* 4. Định dạng bảng và ô nhập liệu */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px; /* Tạo khoảng cách giữa các hàng */
+}
+
+td {
+    text-align: left;
+    color: #555;
+    font-size: 14px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: 0.3s; /* Hiệu ứng mượt khi click vào */
+}
+
+input[type="text"]:focus {
+    border-color: #9b59b6;
+    box-shadow: 0 0 8px rgba(155, 89, 182, 0.2);
+}
+
+/* 5. Nâng cấp nút đăng nhập */
+#DN {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+#DN:hover {
+    opacity: 0.9;
+    transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ khi di chuột */
+}
+
+/* 6. Link quên mật khẩu */
+a {
+    color: #9b59b6;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+a:hover {
+    text-decoration: underline;
+}

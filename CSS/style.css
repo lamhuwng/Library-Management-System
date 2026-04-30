@@ -1,0 +1,289 @@
+/* --- Root & Layout --- */
+:root {
+    --primary-blue: #3498db;
+    --dark-blue: #2c3e50;
+    --bg-light: #f4f7f6;
+    --text-color: #333;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+body { background-color: var(--bg-light); color: var(--text-color); }
+
+.main-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 240px;
+    background-color: var(--dark-blue);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo h2 { color: var(--primary-blue); text-align: center; margin-bottom: 40px; }
+
+.menu ul { list-style: none; }
+.menu ul li a {
+    display: block;
+    padding: 12px;
+    color: #bdc3c7;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: 0.3s;
+}
+
+.menu ul li a:hover, .menu ul li a.active {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.user-info { margin-top: auto; padding-top: 20px; border-top: 1px solid #34495e; }
+
+/* --- Main Content --- */
+.main-content { flex: 1; padding: 25px; overflow-y: auto; }
+
+.top-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.search-box { width: 60%; }
+#quick-search {
+    width: 100%;
+    padding: 12px 25px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 25px;
+    outline: none;
+}
+
+/* --- Lưới hiển thị Sách (Book Grid) --- */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Định dạng từng thẻ sách */
+.book-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    border-bottom-color: var(--primary-blue);
+}
+
+.book-item h3 { font-size: 1rem; margin: 10px 0; height: 40px; overflow: hidden; }
+.book-item p { color: var(--primary-blue); font-weight: bold; }
+
+.add-btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* --- Borrow Cart (Bên phải) --- */
+.borrow-cart {
+    width: 300px;
+    background: white;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.action-btn:disabled { background: #ccc; }
+
+/* --- code dữ liệu --- */
+/* style.css bổ sung */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background-color: #f8f9fa;
+    color: var(--dark-blue);
+    font-weight: 600;
+}
+
+.status.issue {
+    background: #fff3cd;
+    color: #856404;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+.return-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* --- Tối ưu Root & Biến màu --- */
+:root {
+    --primary-blue: #3498db;
+    --primary-dark: #2980b9;
+    --sidebar-dark: #2c3e50;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+/* --- Thanh tìm kiếm hiện đại --- */
+.top-bar {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 40px;
+}
+
+.search-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    padding: 5px 15px;
+    border-radius: 50px; /* Bo tròn kiểu viên thuốc */
+    border: 2px solid #eee;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.search-wrapper:focus-within {
+    border-color: var(--primary-blue);
+    transform: scale(1.02);
+}
+
+.search-icon { margin-right: 10px; font-style: normal; }
+
+#library-search {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px 5px;
+    font-size: 15px;
+    background: transparent;
+}
+
+.search-btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.search-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* --- Tối ưu lưới hiển thị sách --- */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+}
+
+.book-item {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.book-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.book-item h3 { 
+    color: var(--sidebar-dark); 
+    font-size: 1.1rem; 
+    margin-bottom: 12px;
+}
+
+.book-item p { 
+    color: var(--primary-blue); 
+    margin-bottom: 8px; 
+    font-weight: 500;
+}
+
+/* --- Trạng thái nút bấm --- */
+.btn-select {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    border: none;
+    background: var(--primary-blue);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-out {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #ecf0f1;
+    color: #95a5a6;
+    cursor: not-allowed;
+    border: none;
+}
