@@ -10,6 +10,7 @@ CREATE TABLE Books (
     Category VARCHAR(100),
     Price DECIMAL(10, 2),
     AuthNo VARCHAR(100),
+    Quantity INT DEFAULT 0,
     publisher_id INT,
     FOREIGN KEY (publisher_id) REFERENCES Publisher(publisher_id)
 );
