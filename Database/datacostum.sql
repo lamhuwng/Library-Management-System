@@ -2,10 +2,10 @@ INSERT INTO Publisher (name, YearOfPublication) VALUES
 ('NXB Trẻ', 2020),
 ('NXB Giáo Dục', 2022),
 ('Kim Đồng', 2021);
-INSERT INTO Books (ISBN, Title, Edition, Category, Price, AuthNo, publisher_id) VALUES 
-('978-604-1', 'Lập trình Python cơ bản', '1st', 'IT', 120000, 'TG-001', 1),
-('978-604-2', 'Cấu trúc dữ liệu và Giải thuật', '2nd', 'IT', 155000, 'TG-002', 2),
-('978-604-3', 'Thám tử lừng danh Conan', 'Tập 100', 'Manga', 25000, 'Gosho Aoyama', 3);
+INSERT INTO Books (ISBN, Title, Edition, Category, Price, AuthNo,Quantity, publisher_id) VALUES 
+('978-604-1', 'Lập trình Python cơ bản', '1st', 'IT', 120000, 'TG-001',8, 1),
+('978-604-2', 'Cấu trúc dữ liệu và Giải thuật', '2nd', 'IT', 155000, 'TG-002',11, 2),
+('978-604-3', 'Thám tử lừng danh Conan', 'Tập 100', 'Manga', 25000, 'Gosho Aoyama',12, 3);
 INSERT INTO Staff (name) VALUES 
 ('Nguyễn Văn Đạt'),
 ('Trần Thị Thủ Thư');
