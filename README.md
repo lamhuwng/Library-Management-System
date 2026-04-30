@@ -1,4 +1,3 @@
-Dưới đây là nội dung file `README.md` được định dạng chuẩn Markdown để fen có thể copy trực tiếp vào dự án của mình. File này đã được tối ưu để mô tả đúng cấu trúc thư mục và logic mà fen đã xây dựng[cite: 6, 7, 8, 9].
 
 ```markdown
 # 📚 LibManage - Hệ Thống Quản Lý Thư Viện
@@ -57,11 +56,6 @@ Dự án quản lý thư viện mã nguồn mở, cho phép thủ thư và độ
 *   Đảm bảo cổng kết nối trong `config/db.js` khớp với cổng của MySQL trong XAMPP[cite: 6].
 
 ---
-*Phát triển bởi: **Luanvu***
+*Phát triển bởi: **VuHieu***
 ```
 
-### Cách sử dụng:
-1.  Mở VS Code.
-2.  Tạo một file mới tên là `README.md` ở thư mục ngoài cùng của dự án.
-3.  Dán đoạn code trên vào và lưu lại. 
-4.  Khi fen push lên GitHub, đoạn code này sẽ biến thành một trang giới thiệu cực đẹp cho dự án của fen!
