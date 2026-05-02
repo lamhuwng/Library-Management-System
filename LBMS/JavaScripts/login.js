@@ -18,7 +18,7 @@ window.onload = function(){
             document.getElementById('KQ').style.color = 'green';
 
             setTimeout(function(){
-                window.location.href = "http://localhost:8080/LBMS/LBMS/index.html";}, 1000);
+                window.location.href = "index.html";}, 1000);
             }
         };
     }
