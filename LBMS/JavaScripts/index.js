@@ -1,89 +1,92 @@
-// 1. Dữ liệu Danh mục Sách
-const libraryBooks = [
-    { id: 101, title: "Lập trình Web nâng cao", author: "Vũ Đức Long", quantity: 5 },
-    { id: 102, title: "Cơ sở dữ liệu MySQL", author: "Trần Hoàng Huy", quantity: 2 },
-    { id: 103, title: "Nhập môn Công nghệ phần mềm", author: "Trương Lâm Hưng", quantity: 0 },
-    { id: 104, title: "Cấu trúc dữ liệu và Giải thuật", author: "Phan Ngọc Khoa", quantity: 8 },
-    { id: 105, title: "Khai phá dữ liệu", author: "Trương Hà Vũ Hiệu", quantity: 3 }
-];
 
+let libraryBooks = [];
 let borrowList = [];
-
-// Hàm định dạng hiển thị
-function formatUnit(count) {
-    return count + ' cuốn';
+async function loadBooks() {
+    try {
+        const response = await fetch('http://localhost:5000/api/books');
+        libraryBooks = await response.json();
+        renderLibrary(libraryBooks); 
+    } catch (error) {
+        console.error("Lỗi kết nối server:", error);
+        document.getElementById('product-list').innerHTML = '<p class="empty-msg">Không thể kết nối Backend.</p>';
+    }
 }
-
-// 2. Hàm Tìm kiếm nhanh (Khớp với onkeyup="liveSearch()")
-function liveSearch() {
-    const query = document.getElementById('library-search').value.toLowerCase();
-    const filteredBooks = libraryBooks.filter(book => 
-        book.title.toLowerCase().includes(query) || 
-        book.author.toLowerCase().includes(query)
-    );
-    renderLibrary(filteredBooks); // Gọi lại hàm render với danh sách đã lọc
-}
-
-// 3. Hiển thị Danh mục sách (Cập nhật để nhận tham số danh sách)
-function renderLibrary(booksToRender = libraryBooks) {
+function renderLibrary(booksToRender) {
     const bookContainer = document.getElementById('product-list');
     if (!bookContainer) return;
-    
     bookContainer.innerHTML = '';
 
-    if (booksToRender.length === 0) {
+    if (!booksToRender || booksToRender.length === 0) {
         bookContainer.innerHTML = '<p class="empty-msg">Không tìm thấy sách phù hợp.</p>';
         return;
     }
-
     booksToRender.forEach(book => {
-        const isOutOfStock = book.quantity === 0;
+          const isOutOfStock = book.quantity <= 0;
+        
         const card = document.createElement('div');
         card.className = 'book-item';
         card.innerHTML = `
             <h3>${book.title}</h3>
-            <p>Tác giả: ${book.author}</p>
-            <p class="stock">Còn lại: ${book.quantity}</p>
+            <p>Tác giả: ${book.author || 'Chưa cập nhật'}</p>
+            <p class="stock">Còn lại: ${book.quantity || 0} cuốn</p> 
             <button class="add-btn" 
                 ${isOutOfStock ? 'disabled' : ''} 
-                onclick="addToBorrowList(${book.id})">
+                onclick="addToBorrowList('${book.id}')">
                 ${isOutOfStock ? 'Hết sách' : 'Chọn mượn'}
             </button>
         `;
         bookContainer.appendChild(card);
     });
 }
+function liveSearch() {
+    const query = document.getElementById('library-search').value.toLowerCase();
+    const filteredBooks = libraryBooks.filter(book => 
+        (book.title && book.title.toLowerCase().includes(query)) || 
+        (book.author && book.author.toLowerCase().includes(query)) ||
+        (book.id && book.id.toLowerCase().includes(query)) 
+    );
+    renderLibrary(filteredBooks);
+}
 
-// 4. Thêm sách vào danh sách chờ mượn
+
 function addToBorrowList(bookId) {
     const book = libraryBooks.find(b => b.id === bookId);
+    if (!book) return;
+
     const existingEntry = borrowList.find(item => item.id === bookId);
 
     if (existingEntry) {
         if (existingEntry.count < book.quantity) {
             existingEntry.count += 1;
         } else {
-            alert("Số lượng mượn không được vượt quá số lượng trong kho!");
+            alert("Số lượng mượn đã đạt giới hạn hiện có trong thư viện!");
         }
     } else {
-        borrowList.push({ ...book, count: 1 });
+        if (book.quantity > 0) {
+            borrowList.push({ ...book, count: 1 });
+        }
     }
     updateBorrowUI();
 }
-
-// 5. Cập nhật giao diện Giỏ mượn (Panel bên phải)
 function updateBorrowUI() {
     const cartItemsContainer = document.getElementById('cart-items');
     const btnCheckout = document.getElementById('checkout-btn');
+    const subtotalEl = document.getElementById('subtotal');
     
+    if (!cartItemsContainer || !btnCheckout) return;
+
     cartItemsContainer.innerHTML = '';
 
     if (borrowList.length === 0) {
         cartItemsContainer.innerHTML = '<p class="empty-msg">Chưa chọn sách nào.</p>';
         btnCheckout.disabled = true;
+        if (subtotalEl) subtotalEl.innerText = '0 cuốn';
     } else {
         btnCheckout.disabled = false;
+        let totalCount = 0;
+
         borrowList.forEach(item => {
+            totalCount += item.count;
             const itemEl = document.createElement('div');
             itemEl.className = 'cart-item';
             itemEl.innerHTML = `
@@ -91,31 +94,54 @@ function updateBorrowUI() {
                     <strong>${item.title}</strong>
                     <p>SL: ${item.count}</p>
                 </div>
-                <button class="remove-btn" onclick="removeFromList(${item.id})">Xóa</button>
+                <button class="remove-btn" onclick="removeFromList('${item.id}')">Xóa</button>
             `;
             cartItemsContainer.appendChild(itemEl);
         });
+        
+        if (subtotalEl) subtotalEl.innerText = totalCount + ' cuốn';
     }
-    calculateTotalBooks();
 }
 
 function removeFromList(bookId) {
     borrowList = borrowList.filter(item => item.id !== bookId);
     updateBorrowUI();
 }
+document.getElementById('checkout-btn')?.addEventListener('click', async function() {
+    // Nếu giỏ hàng trống thì không làm gì cả
+    if (borrowList.length === 0) return;
 
-function calculateTotalBooks() {
-    let totalCount = 0;
-    borrowList.forEach(item => totalCount += item.count);
-    document.getElementById('subtotal').innerText = formatUnit(totalCount);
-}
+    try {
+        // Gửi dữ liệu xuống file backend PHP
+        const response = await fetch('muon_sach.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                maDocGia: 1, // Tạm fix cứng mã độc giả là 1 (Luan Vu)
+                sachMuon: borrowList 
+            })
+        });
 
-// 6. Xử lý sự kiện Xác nhận mượn
-document.getElementById('checkout-btn').addEventListener('click', function() {
-    alert("Hệ thống đã ghi nhận yêu cầu mượn " + document.getElementById('subtotal').innerText);
-    borrowList = [];
-    updateBorrowUI();
+        // Chờ PHP phản hồi kết quả về
+        const data = await response.json();
+
+        // Xử lý giao diện dựa trên kết quả
+        if (data.success) {
+            alert("Thành công: " + data.message);
+            borrowList = []; // Xóa sạch giỏ hàng
+            updateBorrowUI(); // Cập nhật lại giao diện panel bên phải[cite: 19]
+            
+            // Gọi lại loadBooks() để cập nhật lại số lượng sách tồn kho mới nhất[cite: 19]
+            loadBooks(); 
+        } else {
+            alert("Lỗi từ hệ thống: " + data.message);
+        }
+    } catch (error) {
+        console.error("Lỗi kết nối:", error);
+        alert("Không thể kết nối đến máy chủ xử lý mượn sách!");
+    }
 });
 
-// Khởi tạo ban đầu
-renderLibrary();
+loadBooks();
