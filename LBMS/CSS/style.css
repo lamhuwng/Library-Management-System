@@ -113,8 +113,6 @@ body { background-color: var(--bg-light); color: var(--text); line-height: 1.6; 
 }
 
 .add-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-/* --- 5. Borrow Cart Panel --- */
 .borrow-cart {
     width: 320px;
     background: var(--white);
@@ -142,17 +140,14 @@ body { background-color: var(--bg-light); color: var(--text); line-height: 1.6; 
     border-radius: 8px;
     overflow: hidden;
 }
-
-/* Căn giữa cho cả tiêu đề (th) và nội dung (td) */
 .data-table th, 
 .data-table td {
     padding: 15px;
-    text-align: center; /* Đây là dòng quan trọng nhất */
+    text-align: center; 
     vertical-align: middle;
     border-bottom: 1px solid #eee;
 }
 
-/* Nếu muốn hàng tiêu đề có màu nền riêng */
 .data-table thead {
     background: #f4f7f6;
 }

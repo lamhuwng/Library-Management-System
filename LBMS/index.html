@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Thư viện - LibManage</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="main-layout">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo"><h2>Thư viện sách</h2></div>
+            <div class="logo">
+                <h2>Thư viện sách</h2>
+            </div>
             <nav class="menu">
                 <ul>
                     <li><a href="#" id="nav-home" class="active">Trang chủ (Mượn)</a></li>
                     <li><a href="#" id="nav-return">Quản lý trả sách</a></li>
+                    <li><a href="#" id="admin-nav-link">Quản lý sách</a></li>
                 </ul>
             </nav>
             <div class="user-info">
@@ -30,23 +35,29 @@
                 <header class="top-bar">
                     <div class="search-container">
                         <div class="search-wrapper">
-                            <input type="text" id="library-search" placeholder="Tìm tên sách, tác giả..." onkeyup="liveSearch()">
+                            <input type="text" id="library-search" placeholder="Tìm tên sách, tác giả..."
+                                onkeyup="liveSearch()">
                             <button class="search-btn">Tìm kiếm</button>
                         </div>
                     </div>
                 </header>
                 <section class="content-body">
-                    <div class="section-header"><h2>Danh mục sách</h2></div>
+                    <div class="section-header">
+                        <h2>Danh mục sách</h2>
+                    </div>
                     <div id="product-list" class="book-grid"></div>
                 </section>
             </div>
 
             <!-- PHẦN 2: GIAO DIỆN TRẢ SÁCH (Mặc định ẩn) -->
             <div id="return-section" style="display: none; padding: 20px;">
-                <div class="section-header"><h2>Danh sách đang mượn (Toàn thư viện)</h2></div>
+                <div class="section-header">
+                    <h2>Danh sách đang mượn (Toàn thư viện)</h2>
+                </div>
                 <div class="search-bar" style="margin-bottom: 20px;">
-                    <input type="text" id="return-search" placeholder="Tìm theo tên độc giả, mã sách..." 
-                           onkeyup="filterReturnList()" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                    <input type="text" id="return-search" placeholder="Tìm theo tên độc giả, mã sách..."
+                        onkeyup="filterReturnList()"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
                 </div>
                 <div class="table-container">
                     <table class="data-table">
@@ -66,8 +77,32 @@
                     </table>
                 </div>
             </div>
-        </main>
+            <!-- Giao diện quản lý sách-->
+            <div id="admin-book-section" style="display: none; padding: 20px;">
+                <div class="section-header">
+                    <h2>Quản lý kho sách</h2>
+                </div>
 
+                <!-- Thanh thao tác nhanh (Thêm sách mới) -->
+                <div class="admin-controls"
+                    style="margin-bottom: 20px; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                    <h3 style="margin-bottom: 15px;">Thêm sách mới vào hệ thống</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                        <input type="text" id="admin-isbn" placeholder="Mã ISBN"
+                            style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <input type="text" id="admin-title" placeholder="Tên đầu sách"
+                            style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <input type="text" id="admin-author" placeholder="Tác giả"
+                            style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <input type="number" id="admin-quantity" placeholder="Số lượng"
+                            style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <button onclick="handleAdminAdd()"
+                            style="background: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                            + Thêm Sách
+                        </button>
+                    </div>
+                </div>
+        </main>
         <!-- Right Panel (Giỏ mượn - Chỉ hiện ở trang chủ) -->
         <aside class="borrow-cart" id="right-panel">
             <h2>Sách chờ mượn</h2>
@@ -85,9 +120,22 @@
                 </div>
                 <button id="checkout-btn" class="action-btn" disabled>Xác nhận mượn</button>
             </div>
+            <div id="admin-panel" class="admin-panel" style="display: none;">
+                <h3>Cập nhật kho</h3>
+                <input type="text" id="admin-isbn" placeholder="Mã ISBN">
+                <input type="text" id="admin-title" placeholder="Tên sách">
+                <input type="number" id="admin-quantity" placeholder="Số lượng">
+
+                <div class="admin-actions">
+                    <button onclick="handleAdminAdd()" class="save-btn">Thêm/Sửa</button>
+                    <button onclick="handleAdminDelete()" class="delete-btn">Xóa Sách</button>
+                </div>
+            </div>
+
         </aside>
     </div>
 
     <script src="./JavaScripts/index.js"></script>
 </body>
+
 </html>

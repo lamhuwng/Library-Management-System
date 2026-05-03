@@ -25,7 +25,20 @@ async function loadBooks() {
         document.getElementById('product-list').innerHTML = '<p class="empty-msg">Lỗi kết nối server.</p>';
     }
 }
-
+function toggleAdminPanel() {
+    const panel = document.getElementById('admin-panel');
+    const btn = document.getElementById('admin-toggle-btn');
+    
+    if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        btn.innerText = '✖ Đóng Quản lý';
+        btn.style.backgroundColor = '#ccc';
+    } else {
+        panel.style.display = 'none';
+        btn.innerText = '⚙️ Quản lý kho sách';
+        btn.style.backgroundColor = ''; // Trả về màu mặc định
+    }
+}
 function renderLibrary(booksToRender) {
     const bookContainer = document.getElementById('product-list');
     if (!bookContainer) return;
@@ -117,21 +130,21 @@ document.getElementById('checkout-btn')?.addEventListener('click', async () => {
 // --- 3. QUẢN LÝ TRẢ SÁCH & ĐIỀU HƯỚNG ---
 function toggleView(view) {
     const isHome = view === 'home';
+    const isReturn = view === 'return';
+    const isAdmin = view === 'admin';
     document.getElementById('home-section').style.display = isHome ? 'block' : 'none';
-    document.getElementById('right-panel').style.display = isHome ? 'block' : 'none';
-    document.getElementById('return-section').style.display = isHome ? 'none' : 'block';
-    
+    document.getElementById('right-panel').style.display = isHome ? 'block' : 'none'; // Panel giỏ mượn chỉ hiện ở Home
+    document.getElementById('return-section').style.display = isReturn ? 'block' : 'none';
+    document.getElementById('admin-book-section').style.display = isAdmin ? 'block' : 'none';
     document.getElementById('nav-home').classList.toggle('active', isHome);
-    document.getElementById('nav-return').classList.toggle('active', !isHome);
+    document.getElementById('nav-return').classList.toggle('active', isReturn);
+    document.getElementById('admin-nav-link').classList.toggle('active', isAdmin);
 }
 async function filterReturnList() {
     const query = document.getElementById('return-search').value.trim();
-    
-    // Gọi lại hàm load dữ liệu nhưng truyền thêm tham số tìm kiếm
     await loadAllBorrows(query);
 }
 
-// Cập nhật lại hàm loadAllBorrows để chấp nhận tham số search
 async function loadAllBorrows(searchQuery = "") {
     try {
         const url = searchQuery 
@@ -145,11 +158,29 @@ async function loadAllBorrows(searchQuery = "") {
         console.error("Lỗi tải danh sách mượn:", error);
     }
 }
+async function loadAdminBooks(searchQuery = "") {
+    try {
+        const url = searchQuery 
+            ? `http://localhost:5000/api/books?search=${encodeURIComponent(searchQuery)}`
+            : 'http://localhost:5000/api/books';
+            
+        const response = await fetch(url);
+        const books = await response.json();
+        renderAdminTable(books); // Hàm này vẽ dữ liệu vào bảng
+    } catch (error) {
+        console.error("Lỗi tải danh sách sách kho:", error);
+    }
+}
 document.getElementById('nav-home').onclick = () => toggleView('home');
 document.getElementById('nav-return').onclick = () => {
     toggleView('return');
-    loadAllBorrows(); // Tải danh sách khi chuyển trang
+    loadAllBorrows(); 
 };
+document.getElementById('admin-nav-link').onclick = () => {
+    toggleView('admin');
+    loadAdminBooks(); 
+};  
+
 
 function renderReturnTable(data) {
     const tbody = document.getElementById('master-return-list');
@@ -193,4 +224,33 @@ async function executeReturnBook(recordId, isbn) {
             loadBooks();
         }
     } catch (e) { alert("Lỗi kết nối!"); }
+}
+async function handleAdminAdd() {
+    const bookData = {
+        isbn: document.getElementById('admin-isbn').value,
+        title: document.getElementById('admin-title').value,
+        author: document.getElementById('admin-author').value,
+        quantity: document.getElementById('admin-quantity').value,
+        category: "General", // Giá trị tạm thời
+        price: 0             // Giá trị tạm thời
+    };
+
+    try {
+         const response = await fetch('http://localhost:5000/api/books/add', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookData)
+        });
+
+        if (response.ok) {
+            alert("Đã thêm sách thành công!");
+            await loadBooks(); 
+            document.querySelectorAll('#admin-book-section input').forEach(i => i.value = '');
+        } else {
+            const err = await response.json();
+            alert("Lỗi: " + err.message);
+        }
+    } catch (error) {
+        console.log("Lỗi kết nối:", error);
+    }
 }
