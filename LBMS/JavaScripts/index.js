@@ -107,10 +107,41 @@ function removeFromList(bookId) {
     borrowList = borrowList.filter(item => item.id !== bookId);
     updateBorrowUI();
 }
-document.getElementById('checkout-btn')?.addEventListener('click', function() {
-    alert("Hệ thống đã ghi nhận yêu cầu mượn " + document.getElementById('subtotal').innerText);
-    borrowList = [];
-    updateBorrowUI();
+document.getElementById('checkout-btn')?.addEventListener('click', async function() {
+    // Nếu giỏ hàng trống thì không làm gì cả
+    if (borrowList.length === 0) return;
+
+    try {
+        // Gửi dữ liệu xuống file backend PHP
+        const response = await fetch('muon_sach.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                maDocGia: 1, // Tạm fix cứng mã độc giả là 1 (Luan Vu)
+                sachMuon: borrowList 
+            })
+        });
+
+        // Chờ PHP phản hồi kết quả về
+        const data = await response.json();
+
+        // Xử lý giao diện dựa trên kết quả
+        if (data.success) {
+            alert("Thành công: " + data.message);
+            borrowList = []; // Xóa sạch giỏ hàng
+            updateBorrowUI(); // Cập nhật lại giao diện panel bên phải[cite: 19]
+            
+            // Gọi lại loadBooks() để cập nhật lại số lượng sách tồn kho mới nhất[cite: 19]
+            loadBooks(); 
+        } else {
+            alert("Lỗi từ hệ thống: " + data.message);
+        }
+    } catch (error) {
+        console.error("Lỗi kết nối:", error);
+        alert("Không thể kết nối đến máy chủ xử lý mượn sách!");
+    }
 });
 
 loadBooks();
