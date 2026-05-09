@@ -41,20 +41,22 @@ function toggleAdminPanel() {
 }
 function renderLibrary(booksToRender) {
     const bookContainer = document.getElementById('product-list');
-    if (!bookContainer) return;
-    bookContainer.innerHTML = booksToRender.map(book => {
-        const isOutOfStock = book.quantity <= 0;
-        return `
-            <div class="book-item">
-                <h3>${book.title}</h3>
-                <p>Tác giả: ${book.author || 'Chưa cập nhật'}</p>
-                <p class="stock">Còn lại: ${book.quantity || 0} cuốn</p> 
-                <button class="add-btn" ${isOutOfStock ? 'disabled' : ''} 
-                    onclick="addToBorrowList('${book.id}')">
-                    ${isOutOfStock ? 'Hết sách' : 'Chọn mượn'}
-                </button>
-            </div>`;
-    }).join('');
+    const template = document.getElementById('book-item-template');
+    if (!bookContainer || !template) return;
+    bookContainer.innerHTML = '';
+    booksToRender.forEach(book => {
+        const clone = template.content.cloneNode(true); 
+         clone.querySelector('.book-title').innerText = book.title;
+        clone.querySelector('.book-author').innerText = `Tác giả: ${book.author || 'Chưa cập nhật'}`;    
+        const quantity = book.quantity || 0;
+        clone.querySelector('.stock-info').innerText = `Còn lại: ${quantity} cuốn`;
+        const btn = clone.querySelector('.add-btn');
+        const isOutOfStock = quantity <= 0;
+        btn.innerText = isOutOfStock ? 'Hết sách' : 'Chọn mượn';
+        btn.disabled = isOutOfStock;
+        btn.onclick = () => addToBorrowList(book.id);
+        bookContainer.appendChild(clone);
+    });
 }
 
 function liveSearch() {

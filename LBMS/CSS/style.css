@@ -151,3 +151,53 @@ body { background-color: var(--bg-light); color: var(--text); line-height: 1.6; 
 .data-table thead {
     background: #f4f7f6;
 }
+.admin-controls {
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Tiêu đề nhỏ */
+.admin-subtitle {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Chia cột tự động cho các ô nhập liệu */
+.admin-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+/* Định dạng chung cho các ô input */
+.admin-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.admin-input:focus {
+    border-color: #27ae60; /* Đổi màu viền khi click vào ô */
+}
+
+/* Nút thêm sách */
+.admin-add-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.admin-add-btn:hover {
+    background: #219150; /* Hiệu ứng tối màu khi di chuột vào */
+}
